@@ -4,16 +4,30 @@ size: 64,32
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-ground
+base
   rotate: false
   xy: 2, 2
+  size: 16, 2
+  orig: 16, 2
+  offset: 0, 0
+  index: -1
+ground
+  rotate: false
+  xy: 2, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+player
+  rotate: false
+  xy: 20, 6
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wall
   rotate: false
-  xy: 20, 2
+  xy: 38, 6
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
