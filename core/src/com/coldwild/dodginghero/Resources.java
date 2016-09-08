@@ -1,6 +1,7 @@
 package com.coldwild.dodginghero;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -14,7 +15,7 @@ public class Resources {
     public TextureRegion ground;
     public TextureRegion wall;
 
-    public TextureRegion player;
+    public Sprite player;
     public TextureRegion base;
 
     public static final int TILE_SIZE = 16;
@@ -25,7 +26,7 @@ public class Resources {
         ground = gameSprites.findRegion("ground");
         wall = gameSprites.findRegion("wall");
 
-        player = gameSprites.findRegion("player");
+        player = new Sprite(gameSprites.findRegion("player"));
         base = gameSprites.findRegion("base");
     }
 
