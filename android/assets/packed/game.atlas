@@ -1,6 +1,6 @@
 
 game.png
-size: 64,32
+size: 128,32
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -28,6 +28,13 @@ player
 wall
   rotate: false
   xy: 38, 6
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+warning
+  rotate: false
+  xy: 56, 6
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

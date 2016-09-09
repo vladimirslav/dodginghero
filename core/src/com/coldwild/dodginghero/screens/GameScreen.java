@@ -11,6 +11,7 @@ import com.coldwild.dodginghero.DodgingHero;
 import com.coldwild.dodginghero.Resources;
 import com.coldwild.dodginghero.graph.Background;
 import com.coldwild.dodginghero.graph.SizeEvaluator;
+import com.coldwild.dodginghero.graph.effects.WarningEffect;
 import com.coldwild.dodginghero.logic.GameLogic;
 import com.coldwild.dodginghero.logic.objects.Player;
 
@@ -52,11 +53,13 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         RefreshPlayer();
 
         Gdx.input.setInputProcessor(this);
+        WarningEffect.Create(0, 0, logic.getEffectEngine(), sizeEvaluator, game.res);
     }
 
     public void update(float delta)
     {
         gameStage.act(delta);
+        logic.update(delta);
     }
 
     public void drawBases()
@@ -87,6 +90,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
         bg.draw(gameStage, game.res);
         drawBases();
+        logic.getEffectEngine().draw(batch);
 
         batch.begin();
         player.draw(batch);

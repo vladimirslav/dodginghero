@@ -17,6 +17,7 @@ public class Resources {
 
     public Sprite player;
     public TextureRegion base;
+    public TextureRegion warning;
 
     public static final int TILE_SIZE = 16;
 
@@ -28,6 +29,7 @@ public class Resources {
 
         player = new Sprite(gameSprites.findRegion("player"));
         base = gameSprites.findRegion("base");
+        warning = gameSprites.findRegion("warning");
     }
 
     public void dispose()
