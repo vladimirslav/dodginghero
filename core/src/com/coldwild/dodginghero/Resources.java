@@ -16,6 +16,8 @@ public class Resources {
     public TextureRegion wall;
 
     public Sprite player;
+    public Sprite enemy;
+
     public TextureRegion base;
     public TextureRegion warning;
 
@@ -28,6 +30,8 @@ public class Resources {
         wall = gameSprites.findRegion("wall");
 
         player = new Sprite(gameSprites.findRegion("player"));
+        enemy = new Sprite(gameSprites.findRegion("spider"));
+
         base = gameSprites.findRegion("base");
         warning = gameSprites.findRegion("warning");
     }

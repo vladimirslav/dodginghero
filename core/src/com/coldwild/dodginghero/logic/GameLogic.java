@@ -1,7 +1,9 @@
 package com.coldwild.dodginghero.logic;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.coldwild.dodginghero.DodgingHero;
 import com.coldwild.dodginghero.graph.effects.EffectEngine;
+import com.coldwild.dodginghero.logic.objects.Enemy;
 import com.coldwild.dodginghero.logic.objects.Player;
 
 /**
@@ -13,19 +15,31 @@ public class GameLogic {
     public static final int MAX_BASE_Y = 3;
 
     Player player;
-    EffectEngine effectEngine;
+    Enemy enemy;
 
-    public GameLogic() {
+    EffectEngine effectEngine;
+    DodgingHero game;
+
+    public GameLogic(DodgingHero _game) {
+        game = _game;
         player = new Player(
                 MathUtils.random(MAX_BASE_X),
-                MathUtils.random(MAX_BASE_Y)
+                MathUtils.random(MAX_BASE_Y),
+                game.res
         ); // 0..3
+
+        enemy = new Enemy(game.res);
         effectEngine = new EffectEngine();
     }
 
     public Player getPlayer()
     {
         return player;
+    }
+
+    public Enemy getEnemy()
+    {
+        return enemy;
     }
 
     public void update(float delta)

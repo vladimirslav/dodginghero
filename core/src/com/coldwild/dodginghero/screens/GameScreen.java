@@ -32,6 +32,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     private Stage gameStage;
     private Background bg;
     private GameLogic logic;
+
     private Player player;
 
     public GameScreen(DodgingHero _game) {
@@ -46,11 +47,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
                 GameLogic.MAX_BASE_X,
                 GameLogic.MAX_BASE_Y);
 
-        logic = new GameLogic();
+        logic = new GameLogic(game);
         player = logic.getPlayer();
-
-        player.set(game.res.player);
-        RefreshPlayer();
 
         Gdx.input.setInputProcessor(this);
         WarningEffect.Create(0, 0, logic.getEffectEngine(), sizeEvaluator, game.res);
@@ -93,7 +91,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         logic.getEffectEngine().draw(batch);
 
         batch.begin();
-        player.draw(batch);
+        player.draw(batch, sizeEvaluator);
+        logic.getEnemy().draw(batch, sizeEvaluator);
         batch.end();
 
         gameStage.draw();
@@ -112,13 +111,6 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     {
         super.resize(width, height);
         gameStage.getViewport().update(width, height, true);
-        RefreshPlayer();
-    }
-
-    public void RefreshPlayer()
-    {
-        player.setPosition(sizeEvaluator.getBaseScreenX(player.getFieldX()),
-                sizeEvaluator.getBaseScreenY(player.getFieldY()));
     }
 
     public void AttempMove(int dx, int dy)
@@ -126,7 +118,6 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         if (logic.CanMove(player.getFieldX() + dx, player.getFieldY() + dy))
         {
             logic.AssignPlayerPosition(player.getFieldX() + dx, player.getFieldY() + dy);
-            RefreshPlayer();
         }
     }
 
