@@ -1,6 +1,7 @@
 package com.coldwild.dodginghero.graph.effects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.coldwild.dodginghero.graph.SizeEvaluator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +40,11 @@ public class EffectEngine {
         }
     }
 
-    public void draw(SpriteBatch batch)
+    public void draw(SpriteBatch batch, SizeEvaluator sizeEvaluator)
     {
         for (int i = 0; i < effects.size(); i++)
         {
-            effects.get(i).draw(batch);
+            effects.get(i).draw(batch, sizeEvaluator);
         }
     }
 

@@ -51,7 +51,6 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         player = logic.getPlayer();
 
         Gdx.input.setInputProcessor(this);
-        WarningEffect.Create(0, 0, logic.getEffectEngine(), sizeEvaluator, game.res);
     }
 
     public void update(float delta)
@@ -88,7 +87,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
         bg.draw(gameStage, game.res);
         drawBases();
-        logic.getEffectEngine().draw(batch);
+        logic.getEffectEngine().draw(batch, sizeEvaluator);
 
         batch.begin();
         player.draw(batch, sizeEvaluator);

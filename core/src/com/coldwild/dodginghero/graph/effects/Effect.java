@@ -2,6 +2,7 @@ package com.coldwild.dodginghero.graph.effects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Pool;
+import com.coldwild.dodginghero.graph.SizeEvaluator;
 
 /**
  * Created by comrad_gremlin on 9/9/2016.
@@ -34,7 +35,7 @@ public abstract class Effect implements Pool.Poolable {
         timeAlive += delta;
     }
 
-    public abstract void draw(SpriteBatch batch);
+    public abstract void draw(SpriteBatch batch, SizeEvaluator sizeEvaluator);
 
     public boolean isAlive()
     {

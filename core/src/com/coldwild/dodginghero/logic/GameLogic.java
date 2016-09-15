@@ -3,13 +3,14 @@ package com.coldwild.dodginghero.logic;
 import com.badlogic.gdx.math.MathUtils;
 import com.coldwild.dodginghero.DodgingHero;
 import com.coldwild.dodginghero.graph.effects.EffectEngine;
+import com.coldwild.dodginghero.graph.effects.WarningEffect;
 import com.coldwild.dodginghero.logic.objects.Enemy;
 import com.coldwild.dodginghero.logic.objects.Player;
 
 /**
  * Created by comrad_gremlin on 9/8/2016.
  */
-public class GameLogic {
+public class GameLogic implements Enemy.EnemyAttackListener {
 
     public static final int MAX_BASE_X = 3;
     public static final int MAX_BASE_Y = 3;
@@ -28,7 +29,7 @@ public class GameLogic {
                 game.res
         ); // 0..3
 
-        enemy = new Enemy(game.res);
+        enemy = new Enemy(game.res, this);
         effectEngine = new EffectEngine();
     }
 
@@ -45,6 +46,7 @@ public class GameLogic {
     public void update(float delta)
     {
         effectEngine.update(delta);
+        enemy.update(delta);
     }
 
     public boolean CanMove(int fx, int fy)
@@ -62,5 +64,19 @@ public class GameLogic {
     public EffectEngine getEffectEngine()
     {
         return effectEngine;
+    }
+
+    @Override
+    public void OnAttack(boolean[][] tiles) {
+        for (int x = 0; x < tiles.length; x++)
+        {
+            for (int y = 0; y < tiles[x].length; y++)
+            {
+                if (tiles[x][y])
+                {
+                    WarningEffect.Create(x, y, effectEngine, game.res);
+                }
+            }
+        }
     }
 }
