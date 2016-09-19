@@ -1,5 +1,6 @@
 package com.coldwild.dodginghero.logic;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.coldwild.dodginghero.DodgingHero;
 import com.coldwild.dodginghero.graph.effects.EffectEngine;
@@ -10,10 +11,11 @@ import com.coldwild.dodginghero.logic.objects.Player;
 /**
  * Created by comrad_gremlin on 9/8/2016.
  */
-public class GameLogic implements Enemy.EnemyAttackListener {
+public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.WarningEffectListener {
 
     public static final int MAX_BASE_X = 3;
     public static final int MAX_BASE_Y = 3;
+    private static final int DEFAULT_PLAYER_LIVES = 3;
 
     Player player;
     Enemy enemy;
@@ -26,7 +28,8 @@ public class GameLogic implements Enemy.EnemyAttackListener {
         player = new Player(
                 MathUtils.random(MAX_BASE_X),
                 MathUtils.random(MAX_BASE_Y),
-                game.res
+                game.res,
+                DEFAULT_PLAYER_LIVES
         ); // 0..3
 
         enemy = new Enemy(game.res, this);
@@ -74,8 +77,21 @@ public class GameLogic implements Enemy.EnemyAttackListener {
             {
                 if (tiles[x][y])
                 {
-                    WarningEffect.Create(x, y, effectEngine, game.res);
+                    WarningEffect.Create(x, y, effectEngine, game.res, this);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void OnEffectOver(WarningEffect effect) {
+        if (effect.getFieldX() == player.getFieldX() &&
+                effect.getFieldY() == player.getFieldY())
+        {
+            player.takeDamage(1);
+            if (player.getLives() == 0)
+            {
+                Gdx.app.exit();
             }
         }
     }

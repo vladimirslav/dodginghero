@@ -15,13 +15,21 @@ public class WarningEffect extends Effect {
     private int fieldY;
     private Resources resources;
 
+    public interface WarningEffectListener
+    {
+        void OnEffectOver(WarningEffect effect);
+    };
+
+    private WarningEffectListener listener;
+
     public static WarningEffect Create(int fx,
                                        int fy,
                                        EffectEngine engine,
-                                       Resources res)
+                                       Resources res,
+                                       WarningEffectListener _listener)
     {
         WarningEffect effect = warningPool.obtain();
-        effect.init(fx, fy, engine, res);
+        effect.init(fx, fy, engine, res, _listener);
         return effect;
     }
 
@@ -30,8 +38,13 @@ public class WarningEffect extends Effect {
 
     }
 
-    public void init(int fx, int fy, EffectEngine parent, Resources res)
+    public void init(int fx,
+                     int fy,
+                     EffectEngine parent,
+                     Resources res,
+                     WarningEffectListener _listener)
     {
+        listener = _listener;
         fieldX = fx;
         fieldY = fy;
         resources = res;
@@ -51,10 +64,24 @@ public class WarningEffect extends Effect {
     public void update(float delta)
     {
         super.update(delta);
-        if (timeAlive > WARNING_TIME)
+        if (timeAlive > WARNING_TIME && isAlive)
         {
             isAlive = false;
+            if (listener != null)
+            {
+                listener.OnEffectOver(this);
+            }
         }
+    }
+
+    public int getFieldX()
+    {
+        return fieldX;
+    }
+
+    public int getFieldY()
+    {
+        return fieldY;
     }
 
     @Override

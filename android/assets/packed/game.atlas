@@ -6,42 +6,49 @@ filter: Nearest,Nearest
 repeat: none
 base
   rotate: false
-  xy: 2, 2
+  xy: 92, 22
   size: 16, 2
   orig: 16, 2
   offset: 0, 0
   index: -1
 ground
   rotate: false
-  xy: 2, 6
+  xy: 2, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
+platform
+  rotate: false
+  xy: 2, 2
+  size: 16, 4
+  orig: 16, 4
+  offset: 0, 0
+  index: -1
 player
   rotate: false
-  xy: 20, 6
+  xy: 20, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 spider
   rotate: false
-  xy: 38, 6
+  xy: 38, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wall
   rotate: false
-  xy: 56, 6
+  xy: 56, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 warning
   rotate: false
-  xy: 74, 6
+  xy: 74, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

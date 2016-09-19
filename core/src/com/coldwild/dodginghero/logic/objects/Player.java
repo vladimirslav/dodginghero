@@ -13,11 +13,14 @@ public class Player extends Sprite {
     private int fieldX;
     private int fieldY;
 
-    public Player(int fx, int fy, Resources res)
+    private int lives;
+
+    public Player(int fx, int fy, Resources res, int _lives)
     {
         fieldX = fx;
         fieldY = fy;
         set(res.player);
+        lives = _lives;
     }
 
     public int getFieldX()
@@ -45,5 +48,19 @@ public class Player extends Sprite {
         setPosition(sizeEvaluator.getBaseScreenX(fieldX),
                 sizeEvaluator.getBaseScreenY(fieldY));
         super.draw(batch);
+    }
+
+    public void takeDamage(int val)
+    {
+        lives -= val;
+        if (lives < 0)
+        {
+            lives = 0;
+        }
+    }
+
+    public int getLives()
+    {
+        return lives;
     }
 }
