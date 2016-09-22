@@ -3,9 +3,11 @@ package com.coldwild.dodginghero.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.coldwild.dodginghero.DodgingHero;
 import com.coldwild.dodginghero.Resources;
@@ -56,7 +58,10 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void update(float delta)
     {
         gameStage.act(delta);
-        logic.update(delta);
+        if (player.getLives() > 0)
+        {
+            logic.update(delta);
+        }
     }
 
     public void drawBases()
@@ -77,6 +82,45 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         batch.end();
     }
 
+    private void DrawShadowed(String str, float x, float y, float width, int align, Color color)
+    {
+        game.res.gamefont.setColor(Color.BLACK);
+
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                game.res.gamefont.draw(batch, str, x + i, y + j, width, align, false);
+            }
+        }
+
+        game.res.gamefont.setColor(color);
+        game.res.gamefont.draw(batch, str, x, y, width, align, false);
+        game.res.gamefont.setColor(Color.WHITE);
+    }
+
+    private void DrawUI()
+    {
+        batch.begin();
+        DrawShadowed("LIVES:" + player.getLives(),
+                5,
+                gameStage.getHeight() - 7,
+                gameStage.getWidth(),
+                Align.left,
+                Color.WHITE);
+
+        if (player.getLives() <= 0)
+        {
+            DrawShadowed("DEFEAT!",
+                    0,
+                    gameStage.getHeight() / 2,
+                    gameStage.getWidth(),
+                    Align.center,
+                    Color.RED);
+        }
+        batch.end();
+    }
+
     @Override
     public void render(float delta)
     {
@@ -94,6 +138,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         logic.getEnemy().draw(batch, sizeEvaluator);
         batch.end();
 
+        DrawUI();
         gameStage.draw();
     }
 
@@ -114,7 +159,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
     public void AttempMove(int dx, int dy)
     {
-        if (logic.CanMove(player.getFieldX() + dx, player.getFieldY() + dy))
+        if (player.getLives() > 0 &&
+            logic.CanMove(player.getFieldX() + dx, player.getFieldY() + dy))
         {
             logic.AssignPlayerPosition(player.getFieldX() + dx, player.getFieldY() + dy);
         }

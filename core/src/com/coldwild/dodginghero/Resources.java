@@ -1,6 +1,7 @@
 package com.coldwild.dodginghero;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Resources {
 
     TextureAtlas gameSprites;
+
+    public BitmapFont gamefont;
 
     public TextureRegion ground;
     public TextureRegion wall;
@@ -25,6 +28,8 @@ public class Resources {
 
     public Resources()
     {
+        gamefont = new BitmapFont(Gdx.files.internal("gamefont.fnt"), Gdx.files.internal("gamefont.png"), false);
+
         gameSprites = new TextureAtlas(Gdx.files.internal("packed/game.atlas"));
         ground = gameSprites.findRegion("ground");
         wall = gameSprites.findRegion("wall");
