@@ -15,6 +15,7 @@ import com.coldwild.dodginghero.graph.Background;
 import com.coldwild.dodginghero.graph.SizeEvaluator;
 import com.coldwild.dodginghero.graph.effects.WarningEffect;
 import com.coldwild.dodginghero.logic.GameLogic;
+import com.coldwild.dodginghero.logic.objects.Bonus;
 import com.coldwild.dodginghero.logic.objects.Player;
 
 /**
@@ -109,6 +110,13 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
                 Align.left,
                 Color.WHITE);
 
+        DrawShadowed("ENEMY:" + logic.getEnemy().getLives(),
+                0,
+                gameStage.getHeight() - 7,
+                gameStage.getWidth() - 5,
+                Align.right,
+                Color.WHITE);
+
         if (player.getLives() <= 0)
         {
             DrawShadowed("DEFEAT!",
@@ -134,6 +142,10 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         logic.getEffectEngine().draw(batch, sizeEvaluator);
 
         batch.begin();
+        for (Bonus bonus : logic.getBonuses())
+        {
+            bonus.draw(batch, sizeEvaluator);
+        }
         player.draw(batch, sizeEvaluator);
         logic.getEnemy().draw(batch, sizeEvaluator);
         batch.end();

@@ -24,6 +24,9 @@ public class Resources {
     public TextureRegion base;
     public TextureRegion warning;
 
+    public Sprite attackBonus;
+    public Sprite healthBonus;
+
     public static final int TILE_SIZE = 16;
 
     public Resources()
@@ -39,6 +42,9 @@ public class Resources {
 
         base = gameSprites.findRegion("base");
         warning = gameSprites.findRegion("warning");
+
+        attackBonus = gameSprites.createSprite("attack");
+        healthBonus = gameSprites.createSprite("health");
     }
 
     public void dispose()

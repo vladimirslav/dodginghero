@@ -14,9 +14,11 @@ import com.coldwild.dodginghero.logic.GameLogic;
 public class Enemy extends Sprite {
 
     private static final float BASE_ATTACK_TIME = 3.0f;
+    private static final int DEFAULT_ENEMY_LIVES = 10;
 
     private float timeSinceAttack;
     private float nextAttackTime;
+    private int lives;
 
     private boolean targetTiles[][];
 
@@ -29,6 +31,7 @@ public class Enemy extends Sprite {
 
     public Enemy(Resources res, EnemyAttackListener listener)
     {
+        lives = DEFAULT_ENEMY_LIVES;
         set(res.enemy);
         resetAttackTime();
         attackListener = listener;
@@ -76,4 +79,8 @@ public class Enemy extends Sprite {
         }
     }
 
+    public int getLives()
+    {
+        return lives;
+    }
 }
