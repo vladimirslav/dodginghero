@@ -22,6 +22,14 @@ public class Enemy extends Sprite {
 
     private boolean targetTiles[][];
 
+    public void takeDamage(int amount) {
+        lives -= amount;
+        if (lives < 0)
+        {
+            lives = 0;
+        }
+    }
+
     public interface EnemyAttackListener
     {
         void OnAttack(boolean[][] tiles);

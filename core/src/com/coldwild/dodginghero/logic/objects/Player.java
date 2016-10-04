@@ -14,6 +14,7 @@ public class Player extends Sprite {
     private int fieldY;
 
     private int lives;
+    private final int max_lives;
 
     public Player(int fx, int fy, Resources res, int _lives)
     {
@@ -21,6 +22,7 @@ public class Player extends Sprite {
         fieldY = fy;
         set(res.player);
         lives = _lives;
+        max_lives = _lives;
     }
 
     public int getFieldX()
@@ -62,5 +64,13 @@ public class Player extends Sprite {
     public int getLives()
     {
         return lives;
+    }
+
+    public void addLives(int amount) {
+        lives += amount;
+        if (lives > max_lives)
+        {
+            lives = max_lives;
+        }
     }
 }

@@ -59,7 +59,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void update(float delta)
     {
         gameStage.act(delta);
-        if (player.getLives() > 0)
+        if (player.getLives() > 0 && logic.getEnemy().getLives() > 0)
         {
             logic.update(delta);
         }
@@ -100,6 +100,16 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         game.res.gamefont.setColor(Color.WHITE);
     }
 
+    private void ShowGameResult(String result)
+    {
+        DrawShadowed(result,
+                0,
+                gameStage.getHeight() / 2,
+                gameStage.getWidth(),
+                Align.center,
+                Color.RED);
+    }
+
     private void DrawUI()
     {
         batch.begin();
@@ -119,12 +129,11 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
         if (player.getLives() <= 0)
         {
-            DrawShadowed("DEFEAT!",
-                    0,
-                    gameStage.getHeight() / 2,
-                    gameStage.getWidth(),
-                    Align.center,
-                    Color.RED);
+            ShowGameResult("DEFEAT!");
+        }
+        else if (logic.getEnemy().getLives() <= 0)
+        {
+            ShowGameResult("VICTORY!");
         }
         batch.end();
     }
@@ -172,6 +181,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void AttempMove(int dx, int dy)
     {
         if (player.getLives() > 0 &&
+            logic.getEnemy().getLives() > 0 &&
             logic.CanMove(player.getFieldX() + dx, player.getFieldY() + dy))
         {
             logic.AssignPlayerPosition(player.getFieldX() + dx, player.getFieldY() + dy);

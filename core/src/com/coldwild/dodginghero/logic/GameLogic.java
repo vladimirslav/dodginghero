@@ -108,6 +108,28 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
     {
         player.setFieldX(fx);
         player.setFieldY(fy);
+
+        for (int i = bonuses.size() - 1; i >= 0; i--)
+        {
+            Bonus currentBonus = bonuses.get(i);
+            if (currentBonus.getFieldX() == fx &&
+                    currentBonus.getFieldY() == fy)
+            {
+
+                if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_HEALTH)
+                {
+                    player.addLives(1);
+                }
+                else if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_ATTACK)
+                {
+                    enemy.takeDamage(1);
+                }
+
+                currentBonus.release();
+                bonuses.remove(i);
+                break;
+            }
+        }
     }
 
     public EffectEngine getEffectEngine()
