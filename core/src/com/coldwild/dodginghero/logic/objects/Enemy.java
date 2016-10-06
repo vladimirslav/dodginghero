@@ -11,7 +11,7 @@ import com.coldwild.dodginghero.logic.GameLogic;
 /**
  * Created by comrad_gremlin on 9/12/2016.
  */
-public class Enemy extends Sprite {
+public class Enemy extends Character {
 
     private static final float BASE_ATTACK_TIME = 3.0f;
     private static final int DEFAULT_ENEMY_LIVES = 10;
@@ -22,14 +22,6 @@ public class Enemy extends Sprite {
 
     private boolean targetTiles[][];
 
-    public void takeDamage(int amount) {
-        lives -= amount;
-        if (lives < 0)
-        {
-            lives = 0;
-        }
-    }
-
     public interface EnemyAttackListener
     {
         void OnAttack(boolean[][] tiles);
@@ -39,7 +31,7 @@ public class Enemy extends Sprite {
 
     public Enemy(Resources res, EnemyAttackListener listener)
     {
-        lives = DEFAULT_ENEMY_LIVES;
+        super(DEFAULT_ENEMY_LIVES);
         set(res.enemy);
         resetAttackTime();
         attackListener = listener;
@@ -59,12 +51,16 @@ public class Enemy extends Sprite {
 
     public void draw(SpriteBatch batch, SizeEvaluator sizeEvaluator)
     {
+        preDraw();
         setPosition(sizeEvaluator.getEnemyX(this), sizeEvaluator.getEnemyY(this));
         super.draw(batch);
+        postDraw();
     }
 
+    @Override
     public void update(float delta)
     {
+        super.update(delta);
         timeSinceAttack += delta;
         if (timeSinceAttack > nextAttackTime)
         {
@@ -85,10 +81,5 @@ public class Enemy extends Sprite {
             attackListener.OnAttack(targetTiles);
             resetAttackTime();
         }
-    }
-
-    public int getLives()
-    {
-        return lives;
     }
 }

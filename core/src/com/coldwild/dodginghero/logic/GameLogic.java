@@ -89,6 +89,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
     {
         gameTime += delta;
         effectEngine.update(delta);
+        player.update(delta);
         enemy.update(delta);
 
         if (lastBonusSpawnTime + BONUS_SPAWN_INTERVAL < gameTime &&

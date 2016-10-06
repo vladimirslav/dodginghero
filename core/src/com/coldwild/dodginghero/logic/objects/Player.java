@@ -8,20 +8,20 @@ import com.coldwild.dodginghero.graph.SizeEvaluator;
 /**
  * Created by comrad_gremlin on 9/8/2016.
  */
-public class Player extends Sprite {
+public class Player extends Character {
 
     private int fieldX;
     private int fieldY;
 
-    private int lives;
+
     private final int max_lives;
 
     public Player(int fx, int fy, Resources res, int _lives)
     {
+        super(_lives);
         fieldX = fx;
         fieldY = fy;
         set(res.player);
-        lives = _lives;
         max_lives = _lives;
     }
 
@@ -47,23 +47,11 @@ public class Player extends Sprite {
 
     public void draw(SpriteBatch batch, SizeEvaluator sizeEvaluator)
     {
+        preDraw();
         setPosition(sizeEvaluator.getBaseScreenX(fieldX),
                 sizeEvaluator.getBaseScreenY(fieldY));
         super.draw(batch);
-    }
-
-    public void takeDamage(int val)
-    {
-        lives -= val;
-        if (lives < 0)
-        {
-            lives = 0;
-        }
-    }
-
-    public int getLives()
-    {
-        return lives;
+        postDraw();
     }
 
     public void addLives(int amount) {
