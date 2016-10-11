@@ -15,6 +15,7 @@ public class Player extends Character {
 
 
     private final int max_lives;
+    public static final float APPROACH_TIME = 0.5f;
 
     public Player(int fx, int fy, Resources res, int _lives)
     {
@@ -48,8 +49,19 @@ public class Player extends Character {
     public void draw(SpriteBatch batch, SizeEvaluator sizeEvaluator)
     {
         preDraw();
-        setPosition(sizeEvaluator.getBaseScreenX(fieldX),
-                sizeEvaluator.getBaseScreenY(fieldY));
+        if (timeAlive < APPROACH_TIME)
+        {
+            float t = timeAlive / APPROACH_TIME; // 0..1
+            t = t * t;
+            setPosition(
+                    t * sizeEvaluator.getBaseScreenX(fieldX),
+                    sizeEvaluator.getBaseScreenY(fieldY));
+        }
+        else
+        {
+            setPosition(sizeEvaluator.getBaseScreenX(fieldX),
+                    sizeEvaluator.getBaseScreenY(fieldY));
+        }
         super.draw(batch);
         postDraw();
     }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -18,6 +19,8 @@ import com.coldwild.dodginghero.logic.GameLogic;
 import com.coldwild.dodginghero.logic.objects.Bonus;
 import com.coldwild.dodginghero.logic.objects.Player;
 
+import sun.security.provider.SHA;
+
 /**
  * Created by comrad_gremlin on 9/6/2016.
  */
@@ -29,6 +32,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public static final int SCREEN_W = 12 * Resources.TILE_SIZE; // 192
     public static final int SCREEN_H = 8 * Resources.TILE_SIZE; // 128
 
+    private static final float SHAKE_TIME_ON_DMG = 0.3f;
+    private static final float SHAKE_DIST = 4.0f;
 
     private SizeEvaluator sizeEvaluator;
 
@@ -158,6 +163,15 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         player.draw(batch, sizeEvaluator);
         logic.getEnemy().draw(batch, sizeEvaluator);
         batch.end();
+
+        gameStage.getCamera().position.set(gameStage.getWidth() / 2, gameStage.getHeight() / 2, 0);
+        if (player.getLives() > 0 &&
+            player.getTimeAlive() - player.getTimeOfDmgTaken() < SHAKE_TIME_ON_DMG)
+        {
+            gameStage.getCamera().translate(-(SHAKE_DIST/2) + MathUtils.random(SHAKE_DIST),
+                    -(SHAKE_DIST/2) + MathUtils.random(SHAKE_DIST), 0);
+        }
+        gameStage.getCamera().update();
 
         DrawUI();
         gameStage.draw();

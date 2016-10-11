@@ -20,6 +20,8 @@ public class Enemy extends Character {
     private float nextAttackTime;
     private int lives;
 
+    private static float SCALE_TIME = 0.5f;
+
     private boolean targetTiles[][];
 
     public interface EnemyAttackListener
@@ -53,6 +55,16 @@ public class Enemy extends Character {
     {
         preDraw();
         setPosition(sizeEvaluator.getEnemyX(this), sizeEvaluator.getEnemyY(this));
+        if (timeAlive < SCALE_TIME)
+        {
+            float t = timeAlive / SCALE_TIME; // 0..1
+            t = t * t;
+            setScale(t);
+        }
+        else
+        {
+            setScale(1);
+        }
         super.draw(batch);
         postDraw();
     }

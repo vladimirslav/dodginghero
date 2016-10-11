@@ -69,7 +69,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
             fy = MathUtils.random(MAX_BASE_Y);
             targetNonEmpty = player.getFieldX() == fx || fy == player.getFieldY();
 
-            for (int i = 0; i < bonuses.size() && targetNonEmpty; i++)
+            for (int i = 0; i < bonuses.size() && (targetNonEmpty == false); i++)
             {
                 if (bonuses.get(i).getFieldX() == fx &&
                         bonuses.get(i).getFieldY() == fy)

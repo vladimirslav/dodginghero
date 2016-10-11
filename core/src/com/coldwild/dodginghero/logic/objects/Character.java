@@ -57,4 +57,14 @@ public class Character extends Sprite {
     {
         timeAlive += delta;
     }
+
+    public float getTimeOfDmgTaken()
+    {
+        return timeOfDmgTaken;
+    }
+
+    public float getTimeAlive()
+    {
+        return timeAlive;
+    }
 }
