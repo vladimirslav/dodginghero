@@ -88,14 +88,16 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
     public void update(float delta)
     {
         gameTime += delta;
-        effectEngine.update(delta);
         player.update(delta);
-        enemy.update(delta);
 
-        if (lastBonusSpawnTime + BONUS_SPAWN_INTERVAL < gameTime &&
-                bonuses.size() < MAX_BONUSES_ON_FIELD)
-        {
-            SpawnRandomBonus();
+        if (player.getLives() > 0 && enemy.getLives() > 0) {
+            effectEngine.update(delta);
+            enemy.update(delta);
+
+            if (lastBonusSpawnTime + BONUS_SPAWN_INTERVAL < gameTime &&
+                    bonuses.size() < MAX_BONUSES_ON_FIELD) {
+                SpawnRandomBonus();
+            }
         }
     }
 
@@ -124,6 +126,10 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                 else if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_ATTACK)
                 {
                     enemy.takeDamage(1);
+                    if (enemy.getLives() <= 0)
+                    {
+                        player.markVictorious();
+                    }
                 }
 
                 currentBonus.release();

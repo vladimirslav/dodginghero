@@ -53,7 +53,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         sizeEvaluator = new SizeEvaluator(gameStage,
                 game.res,
                 GameLogic.MAX_BASE_X,
-                GameLogic.MAX_BASE_Y);
+                GameLogic.MAX_BASE_Y,
+                gameStage.getWidth());
 
         logic = new GameLogic(game);
         player = logic.getPlayer();
@@ -64,10 +65,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     public void update(float delta)
     {
         gameStage.act(delta);
-        if (player.getLives() > 0 && logic.getEnemy().getLives() > 0)
-        {
-            logic.update(delta);
-        }
+        logic.update(delta);
     }
 
     public void drawBases()
@@ -190,6 +188,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     {
         super.resize(width, height);
         gameStage.getViewport().update(width, height, true);
+        sizeEvaluator.setRightSideX(gameStage.getWidth());
     }
 
     public void AttempMove(int dx, int dy)

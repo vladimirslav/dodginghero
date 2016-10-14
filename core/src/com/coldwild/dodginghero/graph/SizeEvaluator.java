@@ -17,12 +17,19 @@ public class SizeEvaluator {
     private final int maxTileBaseX;
     private final int maxTileBaseY;
 
-    public SizeEvaluator(Stage _stage, Resources _res, int maxBaseX, int maxBaseY)
+    private float rightSideX;
+
+    public SizeEvaluator(Stage _stage,
+                         Resources _res,
+                         int maxBaseX,
+                         int maxBaseY,
+                         float _rightSideX)
     {
         measuredStage = _stage;
         resources = _res;
         maxTileBaseX = maxBaseX;
         maxTileBaseY = maxBaseY;
+        rightSideX = _rightSideX;
     }
 
     // 4x4
@@ -55,4 +62,12 @@ public class SizeEvaluator {
         return measuredStage.getHeight() / 2 - enemy.getHeight() / 2;
     }
 
+    public void setRightSideX(float value)
+    {
+        rightSideX = value;
+    }
+
+    public float getRightSideX() {
+        return rightSideX;
+    }
 }

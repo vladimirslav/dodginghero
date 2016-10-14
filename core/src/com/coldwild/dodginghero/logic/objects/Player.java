@@ -13,6 +13,8 @@ public class Player extends Character {
     private int fieldX;
     private int fieldY;
 
+    private boolean winning = false;
+    private float winTime = 0;
 
     private final int max_lives;
     public static final float APPROACH_TIME = 0.5f;
@@ -57,6 +59,19 @@ public class Player extends Character {
                     t * sizeEvaluator.getBaseScreenX(fieldX),
                     sizeEvaluator.getBaseScreenY(fieldY));
         }
+        else if (winning)
+        {
+            float t = 1;
+            if (timeAlive - winTime < APPROACH_TIME)
+            {
+                t = (timeAlive - winTime) / APPROACH_TIME;
+                t = t * t;
+            }
+
+            float fx = sizeEvaluator.getBaseScreenX(fieldX);
+            setPosition(fx + t * (sizeEvaluator.getRightSideX() - fx),
+                    sizeEvaluator.getBaseScreenY(fieldY));
+        }
         else
         {
             setPosition(sizeEvaluator.getBaseScreenX(fieldX),
@@ -72,5 +87,11 @@ public class Player extends Character {
         {
             lives = max_lives;
         }
+    }
+
+    public void markVictorious()
+    {
+        winning = true;
+        winTime = timeAlive;
     }
 }
