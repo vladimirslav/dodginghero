@@ -22,6 +22,11 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
     private static final float BONUS_SPAWN_INTERVAL = 2.0f; // spawn bonus every 2 seconds
     private static final int MAX_BONUSES_ON_FIELD = 3;
 
+    public interface GameEventListener
+    {
+        void OnGameEnd(boolean playerWon);
+    }
+
     Player player;
     Enemy enemy;
 
@@ -32,7 +37,9 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
     float gameTime;
     float lastBonusSpawnTime;
 
-    public GameLogic(DodgingHero _game) {
+    GameEventListener eventListener;
+    public GameLogic(DodgingHero _game, GameEventListener _listener) {
+        eventListener = _listener;
         game = _game;
         player = new Player(
                 MathUtils.random(MAX_BASE_X),
@@ -129,6 +136,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                     if (enemy.getLives() <= 0)
                     {
                         player.markVictorious();
+                        eventListener.OnGameEnd(true);
                     }
                 }
 

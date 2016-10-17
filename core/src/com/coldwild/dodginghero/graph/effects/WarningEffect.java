@@ -10,7 +10,7 @@ import com.coldwild.dodginghero.graph.SizeEvaluator;
  */
 public class WarningEffect extends Effect {
 
-    private static final float WARNING_TIME = 2.0f;
+    private static final float WARNING_TIME = 0.5f;
     private int fieldX;
     private int fieldY;
     private Resources resources;

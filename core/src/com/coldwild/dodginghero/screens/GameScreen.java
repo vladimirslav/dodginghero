@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.coldwild.dodginghero.DodgingHero;
@@ -24,7 +26,8 @@ import sun.security.provider.SHA;
 /**
  * Created by comrad_gremlin on 9/6/2016.
  */
-public class GameScreen extends DefaultScreen implements InputProcessor {
+public class GameScreen extends DefaultScreen
+        implements InputProcessor, GameLogic.GameEventListener {
     SpriteBatch batch;
 
     // 8 height
@@ -43,6 +46,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
     private Player player;
 
+    public static final float GAME_END_FADEOUT = 0.5f;
+    public static final float GAME_START_FADEIN = 0.25f;
+
     public GameScreen(DodgingHero _game) {
         super(_game);
         batch = new SpriteBatch();
@@ -56,10 +62,29 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
                 GameLogic.MAX_BASE_Y,
                 gameStage.getWidth());
 
-        logic = new GameLogic(game);
+        logic = new GameLogic(game, this);
         player = logic.getPlayer();
 
         Gdx.input.setInputProcessor(this);
+
+        gameStage.addAction(
+                new Action() {
+                    float time = 0;
+                    @Override
+                    public boolean act(float delta) {
+                        time += delta;
+                        float t = time / GAME_START_FADEIN;
+                        t *= t;
+                        if (t > 1.0f)
+                        {
+                            t = 1.0f;
+                        }
+
+                        batch.setColor(1, 1, 1, t);
+                        return time >= GAME_START_FADEIN;
+                    }
+                }
+        );
     }
 
     public void update(float delta)
@@ -254,5 +279,34 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    @Override
+    public void OnGameEnd(boolean playerWon) {
+        gameStage.addAction(
+            Actions.sequence(
+                new Action() {
+                    float time = 0;
+                    @Override
+                    public boolean act(float delta) {
+                        time += delta;
+
+                        float t = time / GAME_END_FADEOUT; // 0 .. 1
+                        t *= t;
+                        batch.setColor(1, 1, 1, 1 - t);
+                        return time >= GAME_END_FADEOUT;
+                    }
+                },
+                new Action()
+                {
+                    @Override
+                    public boolean act(float delta) {
+                        dispose();
+                        game.setScreen(new GameScreen(game));
+                        return true;
+                    }
+                }
+            )
+        );
     }
 }
