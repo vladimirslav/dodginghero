@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.coldwild.dodginghero.Resources;
 import com.coldwild.dodginghero.graph.SizeEvaluator;
+import com.coldwild.dodginghero.logic.GameProgress;
 
 /**
  * Created by comrad_gremlin on 9/8/2016.
@@ -25,7 +26,7 @@ public class Player extends Character {
         fieldX = fx;
         fieldY = fy;
         set(res.player);
-        max_lives = _lives;
+        max_lives = GameProgress.maxPlayerLives;
     }
 
     public int getFieldX()

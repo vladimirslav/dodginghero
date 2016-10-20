@@ -85,6 +85,9 @@ public class GameScreen extends DefaultScreen
                     }
                 }
         );
+
+        gameStage.getCamera().update();
+        batch.setProjectionMatrix(gameStage.getCamera().combined);
     }
 
     public void update(float delta)

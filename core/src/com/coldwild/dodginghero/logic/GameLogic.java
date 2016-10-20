@@ -18,7 +18,6 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
 
     public static final int MAX_BASE_X = 3;
     public static final int MAX_BASE_Y = 3;
-    private static final int DEFAULT_PLAYER_LIVES = 3;
     private static final float BONUS_SPAWN_INTERVAL = 2.0f; // spawn bonus every 2 seconds
     private static final int MAX_BONUSES_ON_FIELD = 3;
 
@@ -45,7 +44,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                 MathUtils.random(MAX_BASE_X),
                 MathUtils.random(MAX_BASE_Y),
                 game.res,
-                DEFAULT_PLAYER_LIVES
+                GameProgress.playerLives
         ); // 0..3
 
         enemy = new Enemy(game.res, this);
@@ -132,9 +131,11 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                 }
                 else if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_ATTACK)
                 {
-                    enemy.takeDamage(1);
+                    enemy.takeDamage(GameProgress.playerDamage);
                     if (enemy.getLives() <= 0)
                     {
+                        GameProgress.currentLevel ++;
+                        GameProgress.playerLives = player.getLives();
                         player.markVictorious();
                         eventListener.OnGameEnd(true);
                     }
@@ -172,6 +173,10 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                 effect.getFieldY() == player.getFieldY())
         {
             player.takeDamage(1);
+            if (player.getLives() <= 0)
+            {
+                GameProgress.Reset();
+            }
         }
     }
 

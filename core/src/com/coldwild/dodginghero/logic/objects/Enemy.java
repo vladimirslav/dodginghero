@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.coldwild.dodginghero.Resources;
 import com.coldwild.dodginghero.graph.SizeEvaluator;
 import com.coldwild.dodginghero.logic.GameLogic;
+import com.coldwild.dodginghero.logic.GameProgress;
 
 /**
  * Created by comrad_gremlin on 9/12/2016.
@@ -14,7 +15,6 @@ import com.coldwild.dodginghero.logic.GameLogic;
 public class Enemy extends Character {
 
     private static final float BASE_ATTACK_TIME = 3.0f;
-    private static final int DEFAULT_ENEMY_LIVES = 10;
 
     private float timeSinceAttack;
     private float nextAttackTime;
@@ -33,7 +33,7 @@ public class Enemy extends Character {
 
     public Enemy(Resources res, EnemyAttackListener listener)
     {
-        super(DEFAULT_ENEMY_LIVES);
+        super(GameProgress.getEnemyLives());
         set(res.enemy);
         resetAttackTime();
         attackListener = listener;
