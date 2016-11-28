@@ -3,6 +3,7 @@ package com.coldwild.dodginghero.logic;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.coldwild.dodginghero.DodgingHero;
+import com.coldwild.dodginghero.Resources;
 import com.coldwild.dodginghero.graph.effects.EffectEngine;
 import com.coldwild.dodginghero.graph.effects.WarningEffect;
 import com.coldwild.dodginghero.logic.objects.Bonus;
@@ -47,7 +48,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                 GameProgress.playerLives
         ); // 0..3
 
-        enemy = new Enemy(game.res, this);
+        enemy = new Enemy(game.res, this, MathUtils.random(Resources.ENEMY_UNIVERSAL));
         effectEngine = new EffectEngine();
 
         bonuses = new ArrayList<Bonus>();

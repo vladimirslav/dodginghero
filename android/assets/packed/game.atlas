@@ -1,6 +1,6 @@
 
 game.png
-size: 128,32
+size: 256,32
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -18,44 +18,72 @@ base
   orig: 16, 4
   offset: 0, 0
   index: -1
-ground
+bat
   rotate: false
   xy: 20, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-health
-  rotate: false
-  xy: 110, 10
-  size: 14, 14
-  orig: 14, 14
-  offset: 0, 0
-  index: -1
-player
+ghost
   rotate: false
   xy: 38, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-spider
+ground
   rotate: false
   xy: 56, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall
+health
+  rotate: false
+  xy: 182, 10
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+player
   rotate: false
   xy: 74, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-warning
+skeleton
   rotate: false
   xy: 92, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+slime
+  rotate: false
+  xy: 110, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+spider
+  rotate: false
+  xy: 128, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall
+  rotate: false
+  xy: 146, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+warning
+  rotate: false
+  xy: 164, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

@@ -179,7 +179,6 @@ public class GameScreen extends DefaultScreen
 
         bg.draw(gameStage, game.res);
         drawBases();
-        logic.getEffectEngine().draw(batch, sizeEvaluator);
 
         batch.begin();
         for (Bonus bonus : logic.getBonuses())
@@ -189,6 +188,8 @@ public class GameScreen extends DefaultScreen
         player.draw(batch, sizeEvaluator);
         logic.getEnemy().draw(batch, sizeEvaluator);
         batch.end();
+
+        logic.getEffectEngine().draw(batch, sizeEvaluator);
 
         gameStage.getCamera().position.set(gameStage.getWidth() / 2, gameStage.getHeight() / 2, 0);
         if (player.getLives() > 0 &&
