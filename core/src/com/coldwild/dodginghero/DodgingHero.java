@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.coldwild.dodginghero.logic.GameProgress;
+import com.coldwild.dodginghero.screens.CharacterSelectionScreen;
 import com.coldwild.dodginghero.screens.GameScreen;
 
 public class DodgingHero extends Game {
@@ -16,7 +17,7 @@ public class DodgingHero extends Game {
     public void create () {
         res = new Resources();
         GameProgress.Load();
-        setScreen(new GameScreen(this));
+        setScreen(new CharacterSelectionScreen(this));
     }
 
     @Override
