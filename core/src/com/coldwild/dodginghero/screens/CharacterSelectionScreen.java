@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.coldwild.dodginghero.DodgingHero;
+import com.coldwild.dodginghero.logic.GameProgress;
+import com.coldwild.dodginghero.logic.objects.CharacterRecord;
 
 /**
  * Created by comrad_gremlin on 12/12/2016.
@@ -18,7 +20,6 @@ import com.coldwild.dodginghero.DodgingHero;
 public class CharacterSelectionScreen extends DefaultScreen {
 
     Stage uiStage;
-    int currentCharacter;
 
     void prepareUi()
     {
@@ -40,24 +41,54 @@ public class CharacterSelectionScreen extends DefaultScreen {
 
         uiStage.addActor(startButton);
 
-        Image heroSprite = new Image(game.res.player);
+        Image heroSprite = new Image(
+            game.res.playerSprites.get(CharacterRecord.CHARACTERS[GameProgress.currentCharacter].name)
+        );
+
         heroSprite.setPosition((uiStage.getWidth() - heroSprite.getWidth()) / 2,
                 (uiStage.getHeight() - heroSprite.getHeight()) / 2);
         uiStage.addActor(heroSprite);
 
         TextButton nextButton = new TextButton(">>>", buttonStyle);
+        nextButton.addListener(new ClickListener()
+        {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                GameProgress.currentCharacter += 1;
+                if (GameProgress.currentCharacter == CharacterRecord.CHARACTERS.length)
+                {
+                    GameProgress.currentCharacter = 0;
+                }
+
+                uiStage.clear();
+                prepareUi();
+            }
+        });
         nextButton.setPosition(uiStage.getWidth() * 5 / 6 - nextButton.getWidth() /2,
                 uiStage.getHeight() / 2);
         uiStage.addActor(nextButton);
 
         TextButton prevButton = new TextButton("<<<", buttonStyle);
+        prevButton.addListener(new ClickListener()
+        {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                GameProgress.currentCharacter -= 1;
+                if (GameProgress.currentCharacter < 0)
+                {
+                    GameProgress.currentCharacter = CharacterRecord.CHARACTERS.length - 1;
+                }
+
+                uiStage.clear();
+                prepareUi();
+            }
+        });
         prevButton.setPosition(uiStage.getWidth() / 6, uiStage.getHeight() / 2);
         uiStage.addActor(prevButton);
     }
 
     public CharacterSelectionScreen(DodgingHero _game) {
         super(_game);
-        currentCharacter = 0;
 
         FitViewport viewport = new FitViewport(160, 120);
         uiStage = new Stage(viewport);

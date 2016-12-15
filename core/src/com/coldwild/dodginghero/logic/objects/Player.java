@@ -25,7 +25,8 @@ public class Player extends Character {
         super(_lives);
         fieldX = fx;
         fieldY = fy;
-        set(res.player);
+        //set(res.player);
+        set(res.playerSprites.get(CharacterRecord.CHARACTERS[GameProgress.currentCharacter].name));
         max_lives = GameProgress.maxPlayerLives;
     }
 

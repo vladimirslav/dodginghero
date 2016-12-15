@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.coldwild.dodginghero.logic.objects.Character;
+import com.coldwild.dodginghero.logic.objects.CharacterRecord;
 
 import java.util.HashMap;
 
@@ -28,6 +30,7 @@ public class Resources {
 
     public Sprite player;
     public HashMap<Integer, Sprite> enemySprites;
+    public HashMap<String, Sprite> playerSprites;
 
     public TextureRegion base;
     public TextureRegion warning;
@@ -53,6 +56,13 @@ public class Resources {
         enemySprites.put(ENEMY_DIAGONAL, gameSprites.createSprite("bat"));
         enemySprites.put(ENEMY_RANDOM, gameSprites.createSprite("slime"));
         enemySprites.put(ENEMY_UNIVERSAL, gameSprites.createSprite("skeleton"));
+
+        playerSprites = new HashMap<String, Sprite>();
+        playerSprites.put(CharacterRecord.CHAR_NAME_HUMAN, gameSprites.createSprite("player"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_SPIDER, gameSprites.createSprite("spider"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_SKELETON, gameSprites.createSprite("skeleton"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_GHOST, gameSprites.createSprite("ghost"));
+        playerSprites.put(CharacterRecord.CHAR_NAME_SLIME, gameSprites.createSprite("slime"));
 
         base = gameSprites.findRegion("base");
         warning = gameSprites.findRegion("warning");

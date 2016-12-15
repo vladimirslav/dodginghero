@@ -13,6 +13,7 @@ public class GameProgress {
     public static int maxPlayerLives = 3;
     public static int playerDamage = 1;
     public static int currentLevel = 0;
+    public static int currentCharacter = 0;
 
     private static final String PROGRESS_SAVE_NAME = "progress";
 
