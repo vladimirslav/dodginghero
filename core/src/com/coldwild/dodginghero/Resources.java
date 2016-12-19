@@ -37,6 +37,7 @@ public class Resources {
 
     public Sprite attackBonus;
     public Sprite healthBonus;
+    public Sprite coinBonus;
 
     public static final int TILE_SIZE = 16;
 
@@ -69,6 +70,7 @@ public class Resources {
 
         attackBonus = gameSprites.createSprite("attack");
         healthBonus = gameSprites.createSprite("health");
+        coinBonus = gameSprites.createSprite("coin");
     }
 
     public void dispose()

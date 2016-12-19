@@ -25,65 +25,72 @@ bat
   orig: 16, 16
   offset: 0, 0
   index: -1
-ghost
+coin
   rotate: false
   xy: 38, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-ground
+ghost
   rotate: false
   xy: 56, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-health
-  rotate: false
-  xy: 182, 10
-  size: 14, 14
-  orig: 14, 14
-  offset: 0, 0
-  index: -1
-player
+ground
   rotate: false
   xy: 74, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-skeleton
+health
+  rotate: false
+  xy: 200, 10
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+player
   rotate: false
   xy: 92, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-slime
+skeleton
   rotate: false
   xy: 110, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-spider
+slime
   rotate: false
   xy: 128, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall
+spider
   rotate: false
   xy: 146, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-warning
+wall
   rotate: false
   xy: 164, 8
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+warning
+  rotate: false
+  xy: 182, 8
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

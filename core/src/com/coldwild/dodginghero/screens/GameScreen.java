@@ -18,6 +18,7 @@ import com.coldwild.dodginghero.graph.Background;
 import com.coldwild.dodginghero.graph.SizeEvaluator;
 import com.coldwild.dodginghero.graph.effects.WarningEffect;
 import com.coldwild.dodginghero.logic.GameLogic;
+import com.coldwild.dodginghero.logic.GameProgress;
 import com.coldwild.dodginghero.logic.objects.Bonus;
 import com.coldwild.dodginghero.logic.objects.Player;
 
@@ -156,6 +157,17 @@ public class GameScreen extends DefaultScreen
                 gameStage.getHeight() - 7,
                 gameStage.getWidth() - 5,
                 Align.right,
+                Color.WHITE);
+
+        batch.draw(game.res.coinBonus,
+                gameStage.getViewport().getScreenX() + 2,
+                gameStage.getViewport().getScreenY() + 5);
+
+        DrawShadowed("" + GameProgress.currentGold,
+                gameStage.getViewport().getScreenX() + game.res.coinBonus.getWidth() + 4,
+                gameStage.getViewport().getScreenY() + 8 + game.res.coinBonus.getHeight() / 2,
+                gameStage.getWidth() - 4,
+                Align.left,
                 Color.WHITE);
 
         if (player.getLives() <= 0)

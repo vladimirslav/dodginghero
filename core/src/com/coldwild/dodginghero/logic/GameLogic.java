@@ -86,8 +86,20 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
             }
         } while (targetNonEmpty);
 
+        byte activeBonus = Bonus.BONUS_TYPE_ATTACK;
+        int rnd = MathUtils.random(7); // 0 .. 7
+        // 1/8 chance to get health, 1/4 to get gold
+        if (rnd > 6)
+        {
+            activeBonus = Bonus.BONUS_TYPE_HEALTH;
+        }
+        else if (rnd > 4)
+        {
+            activeBonus = Bonus.BONUS_TYPE_COIN;
+        }
+
         bonuses.add(Bonus.Create(fx, fy,
-                MathUtils.random(3) == 0 ? Bonus.BONUS_TYPE_HEALTH : Bonus.BONUS_TYPE_ATTACK,
+                activeBonus,
                 game.res));
         lastBonusSpawnTime = gameTime;
     }
@@ -140,6 +152,10 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                         player.markVictorious();
                         eventListener.OnGameEnd(true);
                     }
+                }
+                else if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_COIN)
+                {
+                    GameProgress.currentGold += 1;
                 }
 
                 currentBonus.release();
