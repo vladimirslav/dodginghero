@@ -3,6 +3,7 @@ package com.coldwild.dodginghero.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,23 +25,67 @@ public class CharacterSelectionScreen extends DefaultScreen {
 
     void prepareUi()
     {
+        uiStage.clear();
+
+        Label.LabelStyle textStyle = new Label.LabelStyle(game.res.gamefont, Color.WHITE);
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = game.res.gamefont;
         buttonStyle.fontColor = Color.WHITE;
 
-        TextButton startButton = new TextButton("START", buttonStyle);
-        startButton.setPosition((uiStage.getWidth() - startButton.getWidth()) / 2,
-                uiStage.getHeight() / 6);
-        startButton.addListener(new ClickListener()
+        if (GameProgress.levels[GameProgress.currentCharacter] == 0) // char is locked
         {
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                game.setScreen(new GameScreen(game));
-            }
-        });
+            TextButton upgradeBtn = new TextButton("Unlock(1000 Gold)", buttonStyle);
+            upgradeBtn.setPosition((uiStage.getWidth() - upgradeBtn.getWidth()) / 2,
+                    uiStage.getHeight() / 6);
+            upgradeBtn.addListener(new ClickListener()
+            {
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                    if (GameProgress.currentGold >= GameProgress.CHARACTER_PRICE)
+                    {
+                        GameProgress.currentGold -= GameProgress.CHARACTER_PRICE;
+                        GameProgress.levels[GameProgress.currentCharacter] = 1;
+                        prepareUi();
+                    }
+                }
+            });
 
-        uiStage.addActor(startButton);
+            uiStage.addActor(upgradeBtn);
+        }
+        else
+        {
+            TextButton startButton = new TextButton("START", buttonStyle);
+            startButton.setPosition((uiStage.getWidth() - startButton.getWidth()) / 2,
+                    uiStage.getHeight() * 5 / 6);
+            startButton.addListener(new ClickListener()
+            {
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                    dispose();
+                    game.setScreen(new GameScreen(game));
+                }
+            });
+            uiStage.addActor(startButton);
+
+            TextButton upgradeBtn = new TextButton("LvlUp(" +
+                    GameProgress.getNextUpgradeCost(GameProgress.currentCharacter) + ")",
+                    buttonStyle);
+            upgradeBtn.setPosition((uiStage.getWidth() - upgradeBtn.getWidth()) / 2,
+                    uiStage.getHeight() / 6);
+            upgradeBtn.addListener(new ClickListener()
+            {
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                    if (GameProgress.currentGold >= GameProgress.getNextUpgradeCost(GameProgress.currentCharacter))
+                    {
+                        GameProgress.currentGold -= GameProgress.getNextUpgradeCost(GameProgress.currentCharacter);
+                        GameProgress.levels[GameProgress.currentCharacter] += 1;
+                        prepareUi();
+                    }
+                }
+            });
+            uiStage.addActor(upgradeBtn);
+        }
 
         Image heroSprite = new Image(
             game.res.playerSprites.get(CharacterRecord.CHARACTERS[GameProgress.currentCharacter].name)
@@ -49,6 +94,12 @@ public class CharacterSelectionScreen extends DefaultScreen {
         heroSprite.setPosition((uiStage.getWidth() - heroSprite.getWidth()) / 2,
                 (uiStage.getHeight() - heroSprite.getHeight()) / 2);
         uiStage.addActor(heroSprite);
+
+        int lvl = GameProgress.levels[GameProgress.currentCharacter];
+        Label statusText = new Label(lvl > 0 ? "LVL: " + lvl : "LOCKED", textStyle);
+        statusText.setPosition(heroSprite.getX() + (heroSprite.getWidth() - statusText.getWidth()) / 2,
+                heroSprite.getY() - statusText.getHeight() - 5);
+        uiStage.addActor(statusText);
 
         TextButton nextButton = new TextButton(">>>", buttonStyle);
         nextButton.addListener(new ClickListener()
@@ -61,7 +112,6 @@ public class CharacterSelectionScreen extends DefaultScreen {
                     GameProgress.currentCharacter = 0;
                 }
 
-                uiStage.clear();
                 prepareUi();
             }
         });
@@ -80,7 +130,6 @@ public class CharacterSelectionScreen extends DefaultScreen {
                     GameProgress.currentCharacter = CharacterRecord.CHARACTERS.length - 1;
                 }
 
-                uiStage.clear();
                 prepareUi();
             }
         });
@@ -93,7 +142,6 @@ public class CharacterSelectionScreen extends DefaultScreen {
         uiStage.addActor(coinImage);
 
         // amount of coins
-        Label.LabelStyle textStyle = new Label.LabelStyle(game.res.gamefont, Color.WHITE);
         Label coinAmntLbl = new Label("" + GameProgress.currentGold, textStyle);
 
         coinAmntLbl.setPosition(coinImage.getX() + coinImage.getWidth() + 3,
@@ -125,5 +173,12 @@ public class CharacterSelectionScreen extends DefaultScreen {
         Gdx.input.setInputProcessor(null);
         uiStage.dispose();
         super.dispose();
+    }
+
+    @Override
+    public void resize(int w, int h)
+    {
+        super.resize(w, h);
+        uiStage.getViewport().update(w, h, true);
     }
 }
