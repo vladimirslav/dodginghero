@@ -27,7 +27,7 @@ public class Player extends Character {
         fieldY = fy;
         //set(res.player);
         set(res.playerSprites.get(CharacterRecord.CHARACTERS[GameProgress.currentCharacter].name));
-        max_lives = GameProgress.maxPlayerLives;
+        max_lives = GameProgress.getPlayerMaxHp();
     }
 
     public int getFieldX()

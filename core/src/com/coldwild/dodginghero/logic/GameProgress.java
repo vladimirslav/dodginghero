@@ -11,8 +11,6 @@ import com.coldwild.dodginghero.logic.objects.CharacterRecord;
 public class GameProgress {
 
     public static int playerLives = 3;
-    public static int maxPlayerLives = 3;
-    public static int playerDamage = 1;
     public static int currentLevel = 0;
     public static int currentCharacter = 0;
     public static int currentGold = 0;
@@ -23,9 +21,7 @@ public class GameProgress {
     private static final String PROGRESS_SAVE_NAME = "progress";
 
     private static final String SAVE_KEY_LIVES = "lives";
-    private static final String SAVE_KEY_LIVES_MAX = "livesmax";
     private static final String SAVE_KEY_CURRENT_LEVEL = "currentlevel";
-    private static final String SAVE_KEY_PLAYER_DAMAGE = "playerdamage";
     private static final String SAVE_KEY_PLAYER_GOLD = "playergold";
     private static final String SAVE_KEY_PLAYER_LEVEL = "playerlevel";
 
@@ -38,9 +34,7 @@ public class GameProgress {
     {
         Preferences prefs = Gdx.app.getPreferences(PROGRESS_SAVE_NAME);
         prefs.putInteger(SAVE_KEY_LIVES, playerLives);
-        prefs.putInteger(SAVE_KEY_LIVES_MAX, maxPlayerLives);
         prefs.putInteger(SAVE_KEY_CURRENT_LEVEL, currentLevel);
-        prefs.putInteger(SAVE_KEY_PLAYER_DAMAGE, playerDamage);
 
         prefs.putInteger(SAVE_KEY_PLAYER_GOLD, currentGold);
 
@@ -58,9 +52,7 @@ public class GameProgress {
 
         Preferences prefs = Gdx.app.getPreferences(PROGRESS_SAVE_NAME);
         playerLives = prefs.getInteger(SAVE_KEY_LIVES, 3);
-        maxPlayerLives = prefs.getInteger(SAVE_KEY_LIVES_MAX, 3);
         currentLevel = prefs.getInteger(SAVE_KEY_CURRENT_LEVEL, 0);
-        playerDamage = prefs.getInteger(SAVE_KEY_PLAYER_DAMAGE, 1);
         currentGold = prefs.getInteger(SAVE_KEY_PLAYER_GOLD, 0);
 
         for (int i = 0; i < CharacterRecord.CHARACTERS.length; i++)
@@ -71,12 +63,35 @@ public class GameProgress {
 
     public static void Reset() {
         playerLives = 3;
-        maxPlayerLives = 3;
         currentLevel = 0;
-        playerDamage = 1;
     }
 
     public static int getNextUpgradeCost(int currentCharacter) {
         return levels[currentCharacter] * 2;
+    }
+
+    public static int getPlayerMaxHp() {
+        CharacterRecord currentChar = CharacterRecord.CHARACTERS[currentCharacter];
+        return currentChar.getMaxHp(levels[currentCharacter]);
+    }
+
+    public static int getPlayerDamage() {
+        CharacterRecord currentChar = CharacterRecord.CHARACTERS[currentCharacter];
+        return currentChar.getDmg(levels[currentCharacter]);
+    }
+
+    public static int getPlayerHealthRestored() {
+        CharacterRecord currentChar = CharacterRecord.CHARACTERS[currentCharacter];
+        return currentChar.getHpRestored(levels[currentCharacter]);
+    }
+
+    public static float getPlayerBonusReduction() {
+        CharacterRecord currentChar = CharacterRecord.CHARACTERS[currentCharacter];
+        return currentChar.getBonusSpawnReduction(levels[currentCharacter]);
+    }
+
+    public static int getBonusReductionValue() {
+        CharacterRecord currentChar = CharacterRecord.CHARACTERS[currentCharacter];
+        return levels[currentCharacter] / currentChar.levelsForBonusSpawnUpgrade;
     }
 }

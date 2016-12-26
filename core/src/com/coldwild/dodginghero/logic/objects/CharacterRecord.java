@@ -35,4 +35,26 @@ public class CharacterRecord {
         new CharacterRecord(4, 4, 2, 4, CHAR_NAME_GHOST),
         new CharacterRecord(3, 3, 4, 1, CHAR_NAME_SLIME)
     };
+
+    public int getMaxHp(int level)
+    {
+        return 3 + level / levelsForHpUpgrade;
+    }
+
+    public int getDmg(int level)
+    {
+        return 1 + level / levelsForAttackUpgrade;
+    }
+
+    public int getHpRestored(int level)
+    {
+        return 1 + level / levelsForHpRegenUpgrade;
+    }
+
+    public float getBonusSpawnReduction(int level)
+    {
+        int bonusSpawnLvl = level / levelsForBonusSpawnUpgrade;
+        return bonusSpawnLvl / (30 + bonusSpawnLvl); // 30 enables diminishing returns, x / ( x + 30 ) < 1
+    }
+
 }

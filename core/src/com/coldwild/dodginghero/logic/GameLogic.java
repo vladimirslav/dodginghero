@@ -19,7 +19,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
 
     public static final int MAX_BASE_X = 3;
     public static final int MAX_BASE_Y = 3;
-    private static final float BONUS_SPAWN_INTERVAL = 2.0f; // spawn bonus every 2 seconds
+    private final float BONUS_SPAWN_INTERVAL; // spawn bonus every 2 seconds
     private static final int MAX_BONUSES_ON_FIELD = 3;
 
     public interface GameEventListener
@@ -39,6 +39,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
 
     GameEventListener eventListener;
     public GameLogic(DodgingHero _game, GameEventListener _listener) {
+        BONUS_SPAWN_INTERVAL = 2.0f * (1 - GameProgress.getPlayerBonusReduction());
         eventListener = _listener;
         game = _game;
         player = new Player(
@@ -140,11 +141,11 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
 
                 if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_HEALTH)
                 {
-                    player.addLives(1);
+                    player.addLives(GameProgress.getPlayerHealthRestored());
                 }
                 else if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_ATTACK)
                 {
-                    enemy.takeDamage(GameProgress.playerDamage);
+                    enemy.takeDamage(GameProgress.getPlayerDamage());
                     if (enemy.getLives() <= 0)
                     {
                         GameProgress.currentLevel ++;
