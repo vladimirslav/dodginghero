@@ -11,36 +11,41 @@ import com.coldwild.dodginghero.logic.objects.CharacterRecord;
 public class GameProgress {
 
     public static int playerLives = 3;
-    public static int currentLevel = 0;
     public static int currentCharacter = 0;
     public static int currentGold = 0;
 
     public static final int CHARACTER_PRICE = 1000;
     public static int levels[]; // level of each character, 0 = locked
+    public static int stages[]; // how far the character has progressed
 
     private static final String PROGRESS_SAVE_NAME = "progress";
 
     private static final String SAVE_KEY_LIVES = "lives";
-    private static final String SAVE_KEY_CURRENT_LEVEL = "currentlevel";
-    private static final String SAVE_KEY_PLAYER_GOLD = "playergold";
     private static final String SAVE_KEY_PLAYER_LEVEL = "playerlevel";
+    private static final String SAVE_KEY_PLAYER_STAGE = "playerstage";
+    private static final String SAVE_KEY_PLAYER_GOLD = "playergold";
 
     public static int getEnemyLives()
     {
-        return 3 + currentLevel * 2; // 3 lives on lvl0, 5 lives on lvl1, etc
+        return 3 + stages[currentCharacter] * 2; // 3 lives on lvl0, 5 lives on lvl1, etc
+    }
+
+    public static int getEnemyDamage()
+    {
+        return 1 + stages[currentCharacter] / 10;
     }
 
     public static void Save()
     {
         Preferences prefs = Gdx.app.getPreferences(PROGRESS_SAVE_NAME);
         prefs.putInteger(SAVE_KEY_LIVES, playerLives);
-        prefs.putInteger(SAVE_KEY_CURRENT_LEVEL, currentLevel);
 
         prefs.putInteger(SAVE_KEY_PLAYER_GOLD, currentGold);
 
         for (int i = 0; i < CharacterRecord.CHARACTERS.length; i++)
         {
             prefs.putInteger(SAVE_KEY_PLAYER_LEVEL + i, levels[i]);
+            prefs.putInteger(SAVE_KEY_PLAYER_STAGE + i, stages[i]);
         }
 
         prefs.flush();
@@ -49,21 +54,30 @@ public class GameProgress {
     public static void Load()
     {
         levels = new int[CharacterRecord.CHARACTERS.length];
+        stages = new int[CharacterRecord.CHARACTERS.length];
 
         Preferences prefs = Gdx.app.getPreferences(PROGRESS_SAVE_NAME);
         playerLives = prefs.getInteger(SAVE_KEY_LIVES, 3);
-        currentLevel = prefs.getInteger(SAVE_KEY_CURRENT_LEVEL, 0);
         currentGold = prefs.getInteger(SAVE_KEY_PLAYER_GOLD, 0);
 
         for (int i = 0; i < CharacterRecord.CHARACTERS.length; i++)
         {
             levels[i] = prefs.getInteger(SAVE_KEY_PLAYER_LEVEL + i, i == 0 ? 1 : 0);
+            stages[i] = prefs.getInteger(SAVE_KEY_PLAYER_STAGE + i, 0);
         }
     }
 
-    public static void Reset() {
-        playerLives = 3;
-        currentLevel = 0;
+    public static void Reset(boolean resetProgress) {
+        if (resetProgress)
+        {
+            stages[currentCharacter] -= 5;
+            if (stages[currentCharacter] < 0)
+            {
+                stages[currentCharacter] = 0;
+            }
+        }
+
+        playerLives = getPlayerMaxHp();
     }
 
     public static int getNextUpgradeCost(int currentCharacter) {
@@ -93,5 +107,10 @@ public class GameProgress {
     public static int getBonusReductionValue() {
         CharacterRecord currentChar = CharacterRecord.CHARACTERS[currentCharacter];
         return levels[currentCharacter] / currentChar.levelsForBonusSpawnUpgrade;
+    }
+
+    public static void increaseStage() {
+        currentGold += 1 + stages[currentCharacter] / 4;
+        stages[currentCharacter]++;
     }
 }

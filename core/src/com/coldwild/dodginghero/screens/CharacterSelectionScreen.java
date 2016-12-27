@@ -142,6 +142,7 @@ public class CharacterSelectionScreen extends DefaultScreen {
                     GameProgress.currentCharacter = 0;
                 }
 
+                GameProgress.Reset(false);
                 prepareUi();
             }
         });
@@ -160,6 +161,7 @@ public class CharacterSelectionScreen extends DefaultScreen {
                     GameProgress.currentCharacter = CharacterRecord.CHARACTERS.length - 1;
                 }
 
+                GameProgress.Reset(false);
                 prepareUi();
             }
         });

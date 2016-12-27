@@ -148,7 +148,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
                     enemy.takeDamage(GameProgress.getPlayerDamage());
                     if (enemy.getLives() <= 0)
                     {
-                        GameProgress.currentLevel ++;
+                        GameProgress.increaseStage();
                         GameProgress.playerLives = player.getLives();
                         player.markVictorious();
                         eventListener.OnGameEnd(true);
@@ -190,10 +190,10 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
         if (effect.getFieldX() == player.getFieldX() &&
                 effect.getFieldY() == player.getFieldY())
         {
-            player.takeDamage(1);
+            player.takeDamage(GameProgress.getEnemyDamage());
             if (player.getLives() <= 0)
             {
-                GameProgress.Reset();
+                GameProgress.Reset(true);
             }
         }
     }
