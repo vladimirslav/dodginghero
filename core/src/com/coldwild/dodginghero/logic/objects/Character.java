@@ -1,6 +1,7 @@
 package com.coldwild.dodginghero.logic.objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.coldwild.dodginghero.SoundManager;
 
 /**
  * Created by comrad_gremlin on 10/6/2016.
@@ -45,6 +46,7 @@ public class Character extends Sprite {
 
 
     public void takeDamage(int amount) {
+        SoundManager.PlaySwingSound();
         timeOfDmgTaken = timeAlive;
         lives -= amount;
         if (lives < 0)

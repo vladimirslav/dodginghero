@@ -24,7 +24,8 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
 
     public interface GameEventListener
     {
-        void OnGameEnd(boolean playerWon);
+        void OnGameEnd(final boolean playerWon);
+        void OnBonusPickup(byte bonusType);
     }
 
     Player player;
@@ -138,7 +139,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
             if (currentBonus.getFieldX() == fx &&
                     currentBonus.getFieldY() == fy)
             {
-
+                eventListener.OnBonusPickup(currentBonus.getBonusType());
                 if (currentBonus.getBonusType() == Bonus.BONUS_TYPE_HEALTH)
                 {
                     player.addLives(GameProgress.getPlayerHealthRestored());
@@ -193,6 +194,7 @@ public class GameLogic implements Enemy.EnemyAttackListener, WarningEffect.Warni
             player.takeDamage(GameProgress.getEnemyDamage());
             if (player.getLives() <= 0)
             {
+                eventListener.OnGameEnd(false);
                 GameProgress.Reset(true);
             }
         }

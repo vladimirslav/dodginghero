@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.coldwild.dodginghero.DodgingHero;
 import com.coldwild.dodginghero.Resources;
+import com.coldwild.dodginghero.SoundManager;
 import com.coldwild.dodginghero.graph.Background;
 import com.coldwild.dodginghero.graph.SizeEvaluator;
 import com.coldwild.dodginghero.graph.effects.WarningEffect;
@@ -238,6 +239,7 @@ public class GameScreen extends DefaultScreen
             logic.getEnemy().getLives() > 0 &&
             logic.CanMove(player.getFieldX() + dx, player.getFieldY() + dy))
         {
+            SoundManager.PlayWalkSound();
             logic.AssignPlayerPosition(player.getFieldX() + dx, player.getFieldY() + dy);
         }
     }
@@ -298,7 +300,7 @@ public class GameScreen extends DefaultScreen
     }
 
     @Override
-    public void OnGameEnd(boolean playerWon) {
+    public void OnGameEnd(final boolean playerWon) {
         gameStage.addAction(
             Actions.sequence(
                 new Action() {
@@ -318,11 +320,30 @@ public class GameScreen extends DefaultScreen
                     @Override
                     public boolean act(float delta) {
                         dispose();
-                        game.setScreen(new GameScreen(game));
+                        if (playerWon)
+                        {
+                            game.setScreen(new GameScreen(game));
+                        }
+                        else
+                        {
+                            game.setScreen(new CharacterSelectionScreen(game));
+                        }
                         return true;
                     }
                 }
             )
         );
+    }
+
+    @Override
+    public void OnBonusPickup(byte bonusType) {
+        if (bonusType == Bonus.BONUS_TYPE_COIN)
+        {
+            SoundManager.PlayCoinSound();
+        }
+        else if (bonusType == Bonus.BONUS_TYPE_HEALTH)
+        {
+            SoundManager.PlayHealSound();
+        }
     }
 }

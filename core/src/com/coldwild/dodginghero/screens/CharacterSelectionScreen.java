@@ -71,6 +71,7 @@ public class CharacterSelectionScreen extends DefaultScreen {
             {
                 @Override
                 public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                    GameProgress.Reset(false);
                     dispose();
                     game.setScreen(new GameScreen(game));
                 }

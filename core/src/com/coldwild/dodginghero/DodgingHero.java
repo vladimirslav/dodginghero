@@ -17,6 +17,7 @@ public class DodgingHero extends Game {
     public void create () {
         res = new Resources();
         GameProgress.Load();
+        SoundManager.LoadSounds();
         setScreen(new CharacterSelectionScreen(this));
     }
 
@@ -24,5 +25,6 @@ public class DodgingHero extends Game {
     public void dispose () {
         GameProgress.Save();
         res.dispose();
+        SoundManager.ReleaseSounds();
     }
 }
