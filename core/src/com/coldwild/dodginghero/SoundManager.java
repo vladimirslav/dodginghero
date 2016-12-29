@@ -2,8 +2,10 @@ package com.coldwild.dodginghero;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
+import com.coldwild.dodginghero.logic.GameProgress;
 
 /**
  * Created by comrad_gremlin on 12/28/2016.
@@ -26,6 +28,7 @@ public class SoundManager {
      */
 
     public static AssetManager assets = new AssetManager();
+    private static Music bMusic = null;
 
     public static void LoadSounds()
     {
@@ -50,7 +53,7 @@ public class SoundManager {
     {
         if (sound != null)
         {
-            sound.play(MathUtils.random(min, max));
+            sound.play(MathUtils.random(min, max) * GameProgress.soundVolume / GameProgress.MAX_SOUND_VOLUME);
         }
     }
 
@@ -76,5 +79,31 @@ public class SoundManager {
     {
         Sound heal = assets.get("music/heal.ogg", Sound.class);
         playSoundRandomVolume(heal, 0.9f, 1.0f);
+    }
+
+    public static void StopBattleMusic()
+    {
+        if (bMusic != null)
+        {
+            bMusic.stop();
+            bMusic = null;
+        }
+    }
+
+    public static void PlayBattleMusic()
+    {
+        bMusic = Gdx.audio.newMusic(Gdx.files.internal("music/music" + MathUtils.random(5) + ".mp3"));
+        bMusic.setLooping(true);
+        bMusic.setVolume((float)GameProgress.soundVolume / GameProgress.MAX_SOUND_VOLUME);
+        bMusic.play();
+    }
+
+    public static void AdjustVolume()
+    {
+        GameProgress.ToggleVolume();
+        if (bMusic != null)
+        {
+            bMusic.setVolume((float)GameProgress.soundVolume / GameProgress.MAX_SOUND_VOLUME);
+        }
     }
 }

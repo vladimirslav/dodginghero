@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.coldwild.dodginghero.logic.objects.Character;
 import com.coldwild.dodginghero.logic.objects.CharacterRecord;
 
@@ -39,6 +40,8 @@ public class Resources {
     public Sprite healthBonus;
     public Sprite coinBonus;
 
+    public TextureRegionDrawable soundBtn[];
+
     public static final int TILE_SIZE = 16;
 
     public Resources()
@@ -71,6 +74,12 @@ public class Resources {
         attackBonus = gameSprites.createSprite("attack");
         healthBonus = gameSprites.createSprite("health");
         coinBonus = gameSprites.createSprite("coin");
+
+        soundBtn = new TextureRegionDrawable[4];
+        for (int i = 0; i < 4; i++)
+        {
+            soundBtn[i] = new TextureRegionDrawable(gameSprites.findRegion("sound" + i));
+        }
     }
 
     public void dispose()

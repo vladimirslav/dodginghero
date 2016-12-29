@@ -8,8 +8,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.coldwild.dodginghero.DodgingHero;
@@ -29,7 +33,7 @@ import sun.security.provider.SHA;
  * Created by comrad_gremlin on 9/6/2016.
  */
 public class GameScreen extends DefaultScreen
-        implements InputProcessor, GameLogic.GameEventListener {
+        implements GameLogic.GameEventListener {
     SpriteBatch batch;
 
     // 8 height
@@ -47,9 +51,12 @@ public class GameScreen extends DefaultScreen
     private GameLogic logic;
 
     private Player player;
+    private ImageButton sndBtn;
 
     public static final float GAME_END_FADEOUT = 0.5f;
     public static final float GAME_START_FADEIN = 0.25f;
+
+    boolean endgame = false;
 
     public GameScreen(DodgingHero _game) {
         super(_game);
@@ -58,6 +65,8 @@ public class GameScreen extends DefaultScreen
         ExtendViewport viewport = new ExtendViewport(SCREEN_W, SCREEN_H);
         gameStage = new Stage(viewport, batch);
         bg = new Background();
+        SoundManager.PlayBattleMusic();
+
         sizeEvaluator = new SizeEvaluator(gameStage,
                 game.res,
                 GameLogic.MAX_BASE_X,
@@ -67,7 +76,7 @@ public class GameScreen extends DefaultScreen
         logic = new GameLogic(game, this);
         player = logic.getPlayer();
 
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(gameStage);
 
         gameStage.addAction(
                 new Action() {
@@ -87,6 +96,41 @@ public class GameScreen extends DefaultScreen
                     }
                 }
         );
+
+        sndBtn = new ImageButton(game.res.soundBtn[GameProgress.soundVolume]);
+        sndBtn.setPosition(gameStage.getWidth() - sndBtn.getWidth() - 10, 10);
+        sndBtn.addListener(new ClickListener()
+        {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                SoundManager.AdjustVolume();
+                sndBtn.getStyle().imageUp = game.res.soundBtn[GameProgress.soundVolume];
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+        gameStage.addActor(sndBtn);
+        gameStage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch (keycode)
+                {
+                    case Input.Keys.UP:
+                        AttempMove(0, 1);
+                        break;
+                    case Input.Keys.DOWN:
+                        AttempMove(0, -1);
+                        break;
+                    case Input.Keys.LEFT:
+                        AttempMove(-1, 0);
+                        break;
+                    case Input.Keys.RIGHT:
+                        AttempMove(1, 0);
+                        break;
+                };
+                return false;
+            }
+        });
 
         gameStage.getCamera().update();
         batch.setProjectionMatrix(gameStage.getCamera().combined);
@@ -215,13 +259,28 @@ public class GameScreen extends DefaultScreen
 
         DrawUI();
         gameStage.draw();
+
+        if (endgame)
+        {
+            dispose();
+            if (playerWon)
+            {
+                game.setScreen(new GameScreen(game));
+            }
+            else
+            {
+                game.setScreen(new CharacterSelectionScreen(game));
+            }
+        }
     }
 
     @Override
     public void dispose()
     {
+        SoundManager.StopBattleMusic();
         super.dispose();
         batch.dispose();
+        gameStage.dispose();
         Gdx.input.setInputProcessor(null);
     }
 
@@ -244,63 +303,10 @@ public class GameScreen extends DefaultScreen
         }
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        switch (keycode)
-        {
-            case Input.Keys.UP:
-                AttempMove(0, 1);
-                break;
-            case Input.Keys.DOWN:
-                AttempMove(0, -1);
-                break;
-            case Input.Keys.LEFT:
-                AttempMove(-1, 0);
-                break;
-            case Input.Keys.RIGHT:
-                AttempMove(1, 0);
-                break;
-        };
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
+    boolean playerWon;
     @Override
     public void OnGameEnd(final boolean playerWon) {
+        this.playerWon = playerWon;
         gameStage.addAction(
             Actions.sequence(
                 new Action() {
@@ -319,15 +325,7 @@ public class GameScreen extends DefaultScreen
                 {
                     @Override
                     public boolean act(float delta) {
-                        dispose();
-                        if (playerWon)
-                        {
-                            game.setScreen(new GameScreen(game));
-                        }
-                        else
-                        {
-                            game.setScreen(new CharacterSelectionScreen(game));
-                        }
+                        endgame = true;
                         return true;
                     }
                 }

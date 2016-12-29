@@ -10,9 +10,12 @@ import com.coldwild.dodginghero.logic.objects.CharacterRecord;
 
 public class GameProgress {
 
+    public static final int MAX_SOUND_VOLUME = 3;
+
     public static int playerLives = 3;
     public static int currentCharacter = 0;
     public static int currentGold = 0;
+    public static int soundVolume = MAX_SOUND_VOLUME;
 
     public static final int CHARACTER_PRICE = 1000;
     public static int levels[]; // level of each character, 0 = locked
@@ -24,6 +27,7 @@ public class GameProgress {
     private static final String SAVE_KEY_PLAYER_LEVEL = "playerlevel";
     private static final String SAVE_KEY_PLAYER_STAGE = "playerstage";
     private static final String SAVE_KEY_PLAYER_GOLD = "playergold";
+    private static final String SAVE_KEY_SOUND_VOLUME = "soundvolume";
 
     public static int getEnemyLives()
     {
@@ -41,6 +45,7 @@ public class GameProgress {
         prefs.putInteger(SAVE_KEY_LIVES, playerLives);
 
         prefs.putInteger(SAVE_KEY_PLAYER_GOLD, currentGold);
+        prefs.putInteger(SAVE_KEY_SOUND_VOLUME, soundVolume);
 
         for (int i = 0; i < CharacterRecord.CHARACTERS.length; i++)
         {
@@ -59,6 +64,7 @@ public class GameProgress {
         Preferences prefs = Gdx.app.getPreferences(PROGRESS_SAVE_NAME);
         playerLives = prefs.getInteger(SAVE_KEY_LIVES, 3);
         currentGold = prefs.getInteger(SAVE_KEY_PLAYER_GOLD, 0);
+        soundVolume = prefs.getInteger(SAVE_KEY_SOUND_VOLUME, MAX_SOUND_VOLUME);
 
         for (int i = 0; i < CharacterRecord.CHARACTERS.length; i++)
         {
@@ -112,5 +118,14 @@ public class GameProgress {
     public static void increaseStage() {
         currentGold += 1 + stages[currentCharacter] / 4;
         stages[currentCharacter]++;
+    }
+
+    public static void ToggleVolume()
+    {
+        soundVolume += 1;
+        if (soundVolume > MAX_SOUND_VOLUME)
+        {
+            soundVolume = 0;
+        }
     }
 }
