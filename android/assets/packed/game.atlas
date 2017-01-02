@@ -13,7 +13,7 @@ attack
   index: -1
 base
   rotate: false
-  xy: 20, 32
+  xy: 38, 16
   size: 16, 4
   orig: 16, 4
   offset: 0, 0
@@ -32,93 +32,121 @@ coin
   orig: 16, 16
   offset: 0, 0
   index: -1
-ghost
+darrow
   rotate: false
   xy: 2, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-ground
+ghost
   rotate: false
   xy: 20, 92
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-health
-  rotate: false
-  xy: 38, 58
-  size: 14, 14
-  orig: 14, 14
-  offset: 0, 0
-  index: -1
-player
+ground
   rotate: false
   xy: 38, 110
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-skeleton
+health
+  rotate: false
+  xy: 38, 22
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+larrow
   rotate: false
   xy: 2, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-slime
+player
   rotate: false
   xy: 20, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-sound0
+rarrow
   rotate: false
   xy: 38, 92
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-sound1
+skeleton
   rotate: false
   xy: 2, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-sound2
+slime
   rotate: false
   xy: 20, 56
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-sound3
+sound0
   rotate: false
   xy: 38, 74
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-spider
+sound1
   rotate: false
   xy: 2, 20
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-wall
+sound2
   rotate: false
   xy: 2, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-warning
+sound3
   rotate: false
   xy: 20, 38
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+spider
+  rotate: false
+  xy: 38, 56
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+uarrow
+  rotate: false
+  xy: 20, 20
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+wall
+  rotate: false
+  xy: 20, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+warning
+  rotate: false
+  xy: 38, 38
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

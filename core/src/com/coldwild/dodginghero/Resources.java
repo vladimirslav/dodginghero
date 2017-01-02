@@ -42,6 +42,12 @@ public class Resources {
 
     public TextureRegionDrawable soundBtn[];
 
+    public TextureRegionDrawable leftArrowBtn;
+    public TextureRegionDrawable rightArrowBtn;
+    public TextureRegionDrawable upArrowBtn;
+    public TextureRegionDrawable downArrowBtn;
+
+
     public static final int TILE_SIZE = 16;
 
     public Resources()
@@ -80,6 +86,11 @@ public class Resources {
         {
             soundBtn[i] = new TextureRegionDrawable(gameSprites.findRegion("sound" + i));
         }
+
+        leftArrowBtn = new TextureRegionDrawable(gameSprites.findRegion("larrow"));
+        rightArrowBtn = new TextureRegionDrawable(gameSprites.findRegion("rarrow"));
+        upArrowBtn = new TextureRegionDrawable(gameSprites.findRegion("uarrow"));
+        downArrowBtn = new TextureRegionDrawable(gameSprites.findRegion("darrow"));
     }
 
     public void dispose()

@@ -1,19 +1,21 @@
 package com.coldwild.dodginghero.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.coldwild.dodginghero.DodgingHero;
@@ -21,13 +23,10 @@ import com.coldwild.dodginghero.Resources;
 import com.coldwild.dodginghero.SoundManager;
 import com.coldwild.dodginghero.graph.Background;
 import com.coldwild.dodginghero.graph.SizeEvaluator;
-import com.coldwild.dodginghero.graph.effects.WarningEffect;
 import com.coldwild.dodginghero.logic.GameLogic;
 import com.coldwild.dodginghero.logic.GameProgress;
 import com.coldwild.dodginghero.logic.objects.Bonus;
 import com.coldwild.dodginghero.logic.objects.Player;
-
-import sun.security.provider.SHA;
 
 /**
  * Created by comrad_gremlin on 9/6/2016.
@@ -52,6 +51,8 @@ public class GameScreen extends DefaultScreen
 
     private Player player;
     private ImageButton sndBtn;
+
+    private Group controlGroup;
 
     public static final float GAME_END_FADEOUT = 0.5f;
     public static final float GAME_START_FADEIN = 0.25f;
@@ -116,16 +117,16 @@ public class GameScreen extends DefaultScreen
                 switch (keycode)
                 {
                     case Input.Keys.UP:
-                        AttempMove(0, 1);
+                        AttemptMove(0, 1);
                         break;
                     case Input.Keys.DOWN:
-                        AttempMove(0, -1);
+                        AttemptMove(0, -1);
                         break;
                     case Input.Keys.LEFT:
-                        AttempMove(-1, 0);
+                        AttemptMove(-1, 0);
                         break;
                     case Input.Keys.RIGHT:
-                        AttempMove(1, 0);
+                        AttemptMove(1, 0);
                         break;
                 };
                 return false;
@@ -134,6 +135,44 @@ public class GameScreen extends DefaultScreen
 
         gameStage.getCamera().update();
         batch.setProjectionMatrix(gameStage.getCamera().combined);
+
+        controlGroup = new Group();
+        gameStage.addActor(controlGroup);
+        //if (Gdx.app.getType() == Application.ApplicationType.Android)
+        {
+            prepareDirectionButtons();
+        }
+    }
+
+    private void prepareDirectionButton(final int dx,
+                                        final int dy,
+                                        TextureRegionDrawable img,
+                                        float x,
+                                        float y)
+    {
+        ImageButton btn = new ImageButton(img);
+        btn.setPosition(x, y);
+        btn.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                AttemptMove(dx, dy);
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+        controlGroup.addActor(btn);
+    }
+
+    private void prepareDirectionButtons() {
+
+        // up-down
+        prepareDirectionButton(0, 1, game.res.upArrowBtn, 2, gameStage.getHeight() / 2 + 2);
+        prepareDirectionButton(0, -1, game.res.downArrowBtn, 2, gameStage.getHeight() / 2 - 16);
+
+        // left-right
+        prepareDirectionButton(-1, 0, game.res.leftArrowBtn, gameStage.getWidth() - 36, gameStage.getHeight() / 2 - 9);
+        prepareDirectionButton(1, 0, game.res.rightArrowBtn, gameStage.getWidth() - 18, gameStage.getHeight() / 2 - 9);
     }
 
     public void update(float delta)
@@ -292,7 +331,7 @@ public class GameScreen extends DefaultScreen
         sizeEvaluator.setRightSideX(gameStage.getWidth());
     }
 
-    public void AttempMove(int dx, int dy)
+    public void AttemptMove(int dx, int dy)
     {
         if (player.getLives() > 0 &&
             logic.getEnemy().getLives() > 0 &&
@@ -306,6 +345,7 @@ public class GameScreen extends DefaultScreen
     boolean playerWon;
     @Override
     public void OnGameEnd(final boolean playerWon) {
+        controlGroup.remove();
         this.playerWon = playerWon;
         gameStage.addAction(
             Actions.sequence(
